@@ -253,6 +253,13 @@ footer .wrap { padding-block: 22px; display: flex; justify-content: space-betwee
 .post .go { font-family: var(--f-mono); font-size: .76rem; letter-spacing: .08em; text-transform: uppercase; color: var(--steel); }
 @media (max-width: 760px) { .posts { grid-template-columns: 1fr; } }
 
+
+/* Language toggle */
+.top .wrap > .lang { margin-left: 4px; }
+.lang { flex: none; min-width: 44px; min-height: 36px; padding: 6px 10px; border: 1.5px solid var(--ink); background: transparent; color: var(--ink); font-family: var(--f-mono); font-size: .78rem; letter-spacing: .08em; cursor: pointer; }
+.lang:hover { border-color: var(--signal); color: var(--signal); }
+@media (max-width: 760px) { .top .wrap > .lang { margin-left: auto; } }
+
 /* Intro sequence */
 .intro {
   position: fixed; inset: 0; z-index: 50; background: var(--term-bg); color: var(--term-fg);
@@ -289,6 +296,7 @@ footer .wrap { padding-block: 22px; display: flex; justify-content: space-betwee
       <a href="#recommendations">Recommendations</a>
       <a href="#contact">Contact</a>
     </nav>
+    <button class="lang" id="lang" type="button" aria-label="Cambiar a español">ES</button>
   </div>
 </header>
 
@@ -305,7 +313,7 @@ footer .wrap { padding-block: 22px; display: flex; justify-content: space-betwee
         <p class="lede">I build security programs for AI-powered platforms: the architecture, the controls, the monitoring and the evidence that proves they work. I came to cybersecurity from fifteen years of leading teams on the manufacturing floor, and I bring the same discipline to every system I secure.</p>
         <div class="cta">
           <a class="btn primary" href="#results">See my results</a>
-          <a class="btn" href="https://www.linkedin.com/in/hector-acosta-ab9358182" target="_blank" rel="noopener">LinkedIn</a>
+          <a class="btn" href="https://www.linkedin.com/in/hector-acostar/" target="_blank" rel="noopener">LinkedIn</a>
           <a class="btn" href="#contact">Contact</a>
         </div>
       </div>
@@ -535,7 +543,7 @@ footer .wrap { padding-block: 22px; display: flex; justify-content: space-betwee
         <figure class="rec" style="margin:0"><blockquote>His positive attitude was very contagious.</blockquote><figcaption class="who"><b>Melanie Mass</b><span>Student, Wilmington University</span></figcaption></figure>
         <figure class="rec" style="margin:0"><blockquote>His commitment to continuous learning further distinguishes him in his role.</blockquote><figcaption class="who"><b>Muniappan Alias Sendilmurugan B</b><span>Lean Six Sigma Master Black Belt, ISO 9001 Lead Auditor</span></figcaption></figure>
       </div>
-      <p class="disclaimer">Excerpts from LinkedIn recommendations. Full text on <a href="https://www.linkedin.com/in/hector-acosta-ab9358182" target="_blank" rel="noopener">LinkedIn</a>.</p>
+      <p class="disclaimer">Excerpts from LinkedIn recommendations. Full text on <a href="https://www.linkedin.com/in/hector-acostar/" target="_blank" rel="noopener">LinkedIn</a>.</p>
     </div>
   </section>
 </main>
@@ -550,7 +558,7 @@ footer .wrap { padding-block: 22px; display: flex; justify-content: space-betwee
       <span class="addr" id="email">hectoracybersect@gmail.com</span>
       <div class="row">
         <button class="btn primary" id="copy" type="button">Copy email</button>
-        <a class="btn" href="https://www.linkedin.com/in/hector-acosta-ab9358182" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="https://www.linkedin.com/in/hector-acostar/" target="_blank" rel="noopener">LinkedIn</a>
       </div>
       <span class="copied" id="copied" aria-live="polite"></span>
     </div>
@@ -563,15 +571,57 @@ footer .wrap { padding-block: 22px; display: flex; justify-content: space-betwee
   var btn = document.getElementById('copy');
   var out = document.getElementById('copied');
   var addr = document.getElementById('email');
+
+  // Language: English by default, Spanish on request or for Spanish browsers.
+  var ES = {"About": "Sobre mí", "Results": "Resultados", "Work": "Trabajo", "Journey": "Trayectoria", "Recommendations": "Recomendaciones", "Contact": "Contacto", "Cybersecurity · Governance · Security Architecture": "Ciberseguridad · Gobernanza · Arquitectura de seguridad", "Co-Founder & Chief Security Officer · Zagreus AI": "Co-Fundador y Director de Seguridad (CSO) · Zagreus AI", "DeVry University Alumnus · B.S. Cybersecurity Student · Former Cyber Club Team Captain": "Egresado de DeVry University · Estudiante de B.S. en Ciberseguridad · Ex capitán del equipo del Cyber Club", "I build security programs for AI-powered platforms: the architecture, the controls, the monitoring and the evidence that proves they work. I came to cybersecurity from fifteen years of leading teams on the manufacturing floor, and I bring the same discipline to every system I secure.": "Construyo programas de seguridad para plataformas impulsadas por IA: la arquitectura, los controles, el monitoreo y la evidencia que demuestra que funcionan. Llegué a la ciberseguridad después de quince años dirigiendo equipos en manufactura, y traigo esa misma disciplina a cada sistema que protejo.", "See my results": "Ver mis resultados", "National Cyber League team game, Spring 2025. 25th of 4,779 teams.": "National Cyber League, juego por equipos, primavera 2025. Lugar 25 de 4,779 equipos.", "NCL individual game, Spring 2025. 240th of 8,575 players.": "NCL, juego individual, primavera 2025. Lugar 240 de 8,575 participantes.", "GPA at DeVry University. Associate degree with High Honors.": "Promedio en DeVry University. Grado asociado con High Honors.", "ISACA Chicago Chapter Scholarship recipient.": "Beca del capítulo de Chicago de ISACA.", "Security that can prove itself": "Seguridad que se puede demostrar", "I am the co-founder and Chief Security Officer of Zagreus AI (formerly Beat.AI), a startup building a multi-tenant AI platform that automates work across enterprise systems. I lead the security program end to end: architecture, identity and access, monitoring, incident response, secure development and compliance documentation.": "Soy co-fundador y Director de Seguridad (CSO) de Zagreus AI (antes Beat.AI), una startup que construye una plataforma de IA multi-tenant que automatiza el trabajo entre sistemas empresariales. Dirijo el programa de seguridad de principio a fin: arquitectura, identidad y acceso, monitoreo, respuesta a incidentes, desarrollo seguro y documentación de cumplimiento.", "My rule is simple: a control that is deployed is not a control that is verified. Every change I approve needs a positive test, a negative test and dated evidence before it counts as done.": "Mi regla es sencilla: un control instalado no es un control verificado. Cada cambio que apruebo necesita una prueba positiva, una prueba negativa y evidencia con fecha antes de darse por terminado.", "Before cybersecurity I spent fifteen years in manufacturing, starting as a machine operator and growing into leading teams in a regulated, safety-first environment. That background shapes how I work today: clear procedures, measurable results and people who know exactly what to do when something goes wrong.": "Antes de la ciberseguridad pasé quince años en manufactura. Empecé como operador de máquinas y llegué a dirigir equipos en un ambiente regulado donde la seguridad iba primero. Esa experiencia define cómo trabajo hoy: procedimientos claros, resultados medibles y gente que sabe exactamente qué hacer cuando algo sale mal.", "I am completing a B.S. in Cybersecurity and Networking at DeVry University, and I enjoy helping other students find their way into this field.": "Estoy terminando un B.S. en Ciberseguridad y Redes en DeVry University, y me gusta ayudar a otros estudiantes a encontrar su camino en este campo.", "Role": "Puesto", "Co-Founder & CSO, Zagreus AI": "Co-Fundador y CSO, Zagreus AI", "Focus": "Enfoque", "Security architecture, governance, cloud and AI security": "Arquitectura de seguridad, gobernanza, seguridad en la nube y en IA", "Education": "Educación", "B.S. Cybersecurity & Networking, DeVry (expected May 2027)": "B.S. en Ciberseguridad y Redes, DeVry (mayo de 2027)", "Frameworks": "Marcos", "Programs mapped to NIST CSF 2.0, NIST SP 800-53 / FedRAMP, ISO/IEC 27001, SOC 2, HIPAA and GDPR": "Programas alineados a NIST CSF 2.0, NIST SP 800-53 / FedRAMP, ISO/IEC 27001, SOC 2, HIPAA y GDPR", "Languages": "Idiomas", "English and Spanish": "Inglés y español", "Competition results": "Resultados en competencias", "From top 17% to top 0.5%": "Del top 17% al top 0.5%", "Official National Cyber League results across three seasons. The national rank improved every season, individually and as a team.": "Resultados oficiales de la National Cyber League en tres temporadas. La posición nacional mejoró cada temporada, individualmente y en equipo.", "Team game": "Por equipos", "Individual game": "Individual", "Lower is better": "Menor es mejor", "Spring 2024": "Primavera 2024", "Fall 2024": "Otoño 2024", "Spring 2025": "Primavera 2025", "Top % nationally": "Top % nacional", "Percent = national rank divided by total participants, from Cyber Skyline summary reports.": "Porcentaje = posición nacional dividida entre el total de participantes, según los reportes de Cyber Skyline.", "Season": "Temporada", "Game": "Juego", "National rank": "Posición nacional", "Team": "Equipo", "25 of 4,779": "25 de 4,779", "240 of 8,575": "240 de 8,575", "173 of 4,894": "173 de 4,894", "762 of 8,487": "762 de 8,487", "262 of 4,199": "262 de 4,199", "1,286 of 7,395": "1,286 de 7,395", "Captain": "Capitán", "Team Captain, DeVry Cyber Club": "Capitán del equipo, DeVry Cyber Club", "Captain in my final year of competition. In 2025 our team placed 4th of 11 in the Midwest region and I was recognized as Most Improved Teammate.": "Capitán en mi último año de competencia. En 2025 nuestro equipo quedó 4.º de 11 en la región Medio Oeste y recibí el reconocimiento de Most Improved Teammate.", "U.S. Department of Defense": "Departamento de Defensa de EE. UU.", "Selected to participate, June 2025.": "Seleccionado para participar, junio de 2025.", "Team leader, 46th place": "Líder del equipo, lugar 46", "December 2024, on the Hackazon platform. Organized by Deloitte, UCCS and the Rocky Mountain Chapter of AFCEA.": "Diciembre de 2024, en la plataforma Hackazon. Organizado por Deloitte, UCCS y el capítulo Rocky Mountain de AFCEA.", "June 2024. Earned the Beginner's Game Room badge, completing several digital forensics challenges.": "Junio de 2024. Obtuve la insignia del Beginner's Game Room al completar varios retos de análisis forense digital.", "Work at Zagreus AI": "Trabajo en Zagreus AI", "What I build as CSO": "Lo que construyo como CSO", "Security for a multi-tenant AI platform, built by a small team. Described in general terms; specific designs and findings stay confidential.": "Seguridad para una plataforma de IA multi-tenant, construida por un equipo pequeño. Descrito en términos generales; los diseños y hallazgos específicos son confidenciales.", "Governance": "Gobernanza", "A security program from zero": "Un programa de seguridad desde cero", "Built the full program: risk register and plan of action, policies, standards and an evidence process, mapped to NIST SP 800-53 for a federal authorization path.": "Construí el programa completo: registro de riesgos y plan de acción, políticas, estándares y un proceso de evidencia, alineado a NIST SP 800-53 con miras a una autorización federal.", "Architecture": "Arquitectura", "Tenant isolation": "Aislamiento entre clientes", "Designed and built the first isolated customer environment, with separate identity, data and network boundaries, and proved isolation with positive and negative tests.": "Diseñé y construí el primer ambiente aislado para un cliente, con identidad, datos y red separados, y demostré el aislamiento con pruebas positivas y negativas.", "Detection": "Detección", "Centralized monitoring": "Monitoreo centralizado", "Stood up a central SIEM with log pipelines from every environment and custom detection rules, so security events reach one place within seconds.": "Monté un SIEM central con flujos de logs desde cada ambiente y reglas de detección propias, para que los eventos de seguridad lleguen a un solo lugar en segundos.", "Tooling": "Herramientas", "A security operations console": "Una consola de operaciones de seguridad", "Built an internal console that combines security checks, alerts, incident cases and compliance evidence, so one person can run the program.": "Construí una consola interna que reúne revisiones de seguridad, alertas, casos de incidentes y evidencia de cumplimiento, para que una sola persona pueda operar el programa.", "Incident response": "Respuesta a incidentes", "Same-night recovery": "Recuperación la misma noche", "Led the investigation and recovery of a production data-loss event, restored the service the same night and documented the root cause and fixes.": "Dirigí la investigación y recuperación de una pérdida de datos en producción, restablecí el servicio esa misma noche y documenté la causa raíz y las correcciones.", "Secure development": "Desarrollo seguro", "Security review before production": "Revisión de seguridad antes de producción", "Review code changes for security before they ship, verify claims against the real code and require evidence before a fix is accepted.": "Reviso la seguridad de los cambios de código antes de que salgan, verifico lo que se afirma contra el código real y exijo evidencia antes de aceptar una corrección.", "From the shop floor to the CSO seat": "Del taller a la silla de CSO", "15 yrs": "15 años", "Manufacturing": "Manufactura", "Started on the production floor as a machine operator and moved up to CNC programmer within months. Then spent years as a shop foreman leading mold designers, programmers, machinists and welders, where safety, quality and delivery were measured every day.": "Empecé en el piso de producción como operador de máquinas y en pocos meses llegué a programador CNC. Después pasé años como foreman del taller, dirigiendo diseñadores de moldes, programadores, maquinistas y soldadores, donde la seguridad, la calidad y las entregas se medían cada día.", "First steps in cybersecurity": "Primeros pasos en ciberseguridad", "Google Cybersecurity Certificate, and the decision to go back to school.": "Certificado de Ciberseguridad de Google, y la decisión de volver a estudiar.", "Competition and training": "Competencias y formación", "First National Cyber League seasons, Cisco Junior Cybersecurity Analyst path, and team leader at the Mountain West Cyber Challenge.": "Primeras temporadas en la National Cyber League, la ruta Junior Cybersecurity Analyst de Cisco, y líder de equipo en el Mountain West Cyber Challenge.", "Into the industry": "Entrada a la industria", "Associate degree with High Honors, ISACA Chicago scholarship, top 0.5% team finish in NCL, and the start of my work as co-founder and Chief Security Officer of Beat.AI.": "Grado asociado con High Honors, beca de ISACA Chicago, top 0.5% por equipos en la NCL, y el comienzo de mi trabajo como co-fundador y Director de Seguridad de Beat.AI.", "The company relaunched as Zagreus AI. Leading the security program, captaining the DeVry Cyber Club team, and speaking to the next generation of students.": "La compañía se relanzó como Zagreus AI. Dirijo el programa de seguridad, fui capitán del equipo del DeVry Cyber Club y doy charlas a la próxima generación de estudiantes.", "B.S. Cybersecurity & Networking": "B.S. en Ciberseguridad y Redes", "Expected graduation, May 2027.": "Graduación prevista: mayo de 2027.", "Education & training": "Educación y formación", "Always learning": "Siempre aprendiendo", "B.S. Cybersecurity & Networking, DeVry University": "B.S. en Ciberseguridad y Redes, DeVry University", "May 2027": "Mayo 2027", "In progress, 4.0 GPA.": "En curso, promedio 4.0.", "A.A.S. Cybersecurity & Networking, DeVry University": "A.A.S. en Ciberseguridad y Redes, DeVry University", "High Honors, 4.0 GPA.": "High Honors, promedio 4.0.", "Undergraduate Certificate in Cybersecurity, DeVry University": "Certificado universitario en Ciberseguridad, DeVry University", "IT Essentials Certificate": "Certificado IT Essentials", "Junior Cybersecurity Analyst Career Path, Cisco Networking Academy": "Ruta Junior Cybersecurity Analyst, Cisco Networking Academy", "Google Cybersecurity Certificate, Coursera": "Certificado de Ciberseguridad de Google, Coursera", "Speaking & community": "Charlas y comunidad", "Giving back": "Devolviendo a la comunidad", "Panelist, DeVryPro \"Inside the Attack: Anatomy of a 2026 Cyberattack\"": "Panelista, DeVryPro \"Inside the Attack: Anatomy of a 2026 Cyberattack\"", "Featured student success story, DeVry University": "Historia de éxito estudiantil destacada, DeVry University", "Featured talk for high school students in Oaxaca, Mexico": "Charla destacada para estudiantes de bachillerato en Oaxaca, México", "Apr 2025": "Abr 2025", "\"Construyendo tu futuro en ciberseguridad.\" Details below.": "\"Construyendo tu futuro en ciberseguridad.\" Detalles abajo.", "NCL preparation workshop for DeVry students": "Taller de preparación para la NCL para estudiantes de DeVry", "Feb–Mar 2025": "Feb–Mar 2025", "Oct 2026": "Oct 2026", "Featured talk": "Charla destacada", "CECyTE EMSaD No. 61, Abejones, Oaxaca · Virtual · April 4, 2025": "CECyTE EMSaD No. 61, Abejones, Oaxaca · Virtual · 4 de abril de 2025", "I was invited to speak to students at CECyTE EMSaD No. 61 in Abejones, Oaxaca. The goal was to raise awareness about online risks and show young people from small communities that they can dream big and prepare for a career in technology.": "Me invitaron a hablar con los estudiantes del CECyTE EMSaD No. 61 en Abejones, Oaxaca. La meta era crear conciencia sobre los riesgos en línea y mostrar a jóvenes de comunidades pequeñas que pueden soñar en grande y prepararse para una carrera en tecnología.", "Online safety": "Seguridad en línea", "How to protect personal information and avoid common threats.": "Cómo proteger la información personal y evitar amenazas comunes.", "Cybersecurity fundamentals": "Fundamentos de ciberseguridad", "What it is and why it matters in everyday life.": "Qué es y por qué importa en la vida diaria.", "Free learning tools": "Herramientas gratis para aprender", "How to get started with CTFs and platforms like TryHackMe.": "Cómo empezar con CTFs y plataformas como TryHackMe.", "My journey": "Mi trayectoria", "From zero experience to security work and national competitions like NCL and the Cyber Sentinel Challenge.": "De cero experiencia a trabajar en seguridad y competir a nivel nacional en la NCL y el Cyber Sentinel Challenge.", "From the certificate of recognition, signed by the director of CECyTE EMSaD No. 61. In English: \"For his outstanding professionalism in delivering the talk, which was a great motivation for the students.\"": "Del reconocimiento firmado por el director del CECyTE EMSaD No. 61.", "Event flyer": "Cartel del evento", "Certificate of recognition · CECyTE Oaxaca": "Reconocimiento · CECyTE Oaxaca", "Writing": "Escritos", "From my LinkedIn": "Desde mi LinkedIn", "Personal stories about how I got into cybersecurity and what competing taught me.": "Historias personales sobre cómo llegué a la ciberseguridad y lo que me enseñó competir. (Artículos en inglés.)", "LinkedIn article · December 17, 2024": "Artículo en LinkedIn · 17 de diciembre de 2024", "LinkedIn article · November 11, 2024": "Artículo en LinkedIn · 11 de noviembre de 2024", "Read on LinkedIn →": "Leer en LinkedIn →", "Skills": "Habilidades", "Toolbox": "Caja de herramientas", "Security leadership": "Liderazgo en seguridad", "Security architecture": "Arquitectura de seguridad", "Governance & risk": "Gobernanza y riesgo", "Identity & access": "Identidad y acceso", "Secure SDLC": "SDLC seguro", "Vendor & supply chain risk": "Riesgo de proveedores y cadena de suministro", "Hands-on": "Práctica", "SIEM & detection": "SIEM y detección", "Cloud & API security": "Seguridad en la nube y APIs", "Network segmentation": "Segmentación de red", "Firewalls, WAF & TLS": "Firewalls, WAF y TLS", "Vulnerability management": "Gestión de vulnerabilidades", "CI/CD security testing": "Pruebas de seguridad en CI/CD", "Security observability": "Observabilidad de seguridad", "In their words": "En sus palabras", "Cybersecurity & teamwork": "Ciberseguridad y trabajo en equipo", "Leadership": "Liderazgo", "Cybersecurity student, National Cyber League player": "Estudiante de ciberseguridad, competidora de la National Cyber League", "IT & Networking student, DeVry University": "Estudiante de TI y Redes, DeVry University", "B.S. Computer Information Systems student, DeVry University": "Estudiante de B.S. en Sistemas de Información, DeVry University", "Incident Response Analyst, U.S. Coast Guard": "Analista de Respuesta a Incidentes, Guardia Costera de EE. UU.", "Retired, managed Hector directly": "Jubilado, supervisor directo de Hector", "President, JD Machine Parts, Inc.": "Presidente, JD Machine Parts, Inc.", "Former colleague, Durand Glass Manufacturing": "Ex compañero, Durand Glass Manufacturing", "Administrative Assistant, former colleague": "Asistente administrativa, ex compañera", "Application Engineer, former colleague": "Ingeniero de aplicaciones, ex compañero", "Mold Designer, former colleague": "Diseñador de moldes, ex compañero", "Student, Wilmington University": "Estudiante, Wilmington University", "Lean Six Sigma Master Black Belt, ISO 9001 Lead Auditor": "Lean Six Sigma Master Black Belt, auditor líder ISO 9001", "Excerpts from LinkedIn recommendations. Full text on": "Extractos de recomendaciones en LinkedIn (en inglés original). Texto completo en", "Let's talk security": "Hablemos de seguridad", "Open to conversations about security leadership, speaking with students, and building secure AI platforms.": "Abierto a conversar sobre liderazgo en seguridad, charlas con estudiantes y cómo construir plataformas de IA seguras.", "Copy email": "Copiar correo", "Cybersecurity · Zagreus AI": "Ciberseguridad · Zagreus AI", "English / Español": "English / Español"};
+  var orig = new WeakMap();
+  var lang = 'en';
+  try { lang = localStorage.getItem('ha-lang') || ''; } catch (e) { lang = ''; }
+  if (lang !== 'en' && lang !== 'es') lang = (navigator.language || '').toLowerCase().indexOf('es') === 0 ? 'es' : 'en';
+  var T = {
+    en: { copied: 'Email copied.', select: 'Selected. Press Ctrl+C or Cmd+C to copy.', btn: 'ES', btnLabel: 'Cambiar a español' },
+    es: { copied: 'Correo copiado.', select: 'Seleccionado. Presiona Ctrl+C o Cmd+C para copiar.', btn: 'EN', btnLabel: 'Switch to English' }
+  };
+  function applyLang(l) {
+    lang = l;
+    document.documentElement.lang = l;
+    var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    var n;
+    while ((n = w.nextNode())) {
+      var p = n.parentElement;
+      if (!p || p.closest('script, style, .intro')) continue;
+      if (!orig.has(n)) orig.set(n, n.nodeValue);
+      var o = orig.get(n);
+      var key = o.replace(/\s+/g, ' ').trim();
+      if (!key) continue;
+      if (l === 'es' && Object.prototype.hasOwnProperty.call(ES, key)) {
+        var lead = o.match(/^\s*/)[0], trail = o.match(/\s*$/)[0];
+        n.nodeValue = lead + ES[key] + trail;
+      } else {
+        n.nodeValue = o;
+      }
+    }
+    var b = document.getElementById('lang');
+    b.textContent = T[l].btn;
+    b.setAttribute('aria-label', T[l].btnLabel);
+    out.textContent = '';
+  }
+  document.getElementById('lang').addEventListener('click', function () {
+    var next = lang === 'en' ? 'es' : 'en';
+    try { localStorage.setItem('ha-lang', next); } catch (e) {}
+    applyLang(next);
+  });
+  applyLang(lang);
+
   btn.addEventListener('click', function () {
     var text = addr.textContent.trim();
     var selectIt = function () {
       var r = document.createRange(); r.selectNodeContents(addr);
       var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
-      out.textContent = 'Selected. Press Ctrl+C or Cmd+C to copy.';
+      out.textContent = T[lang].select;
     };
     try {
-      navigator.clipboard.writeText(text).then(function () { out.textContent = 'Email copied.'; }, selectIt);
+      navigator.clipboard.writeText(text).then(function () { out.textContent = T[lang].copied; }, selectIt);
     } catch (e) { selectIt(); }
   });
 
@@ -581,7 +631,14 @@ footer .wrap { padding-block: 22px; display: flex; justify-content: space-betwee
   try { seen = sessionStorage.getItem('ha-intro') === '1'; } catch (e) {}
   if (reduce || seen) return;
 
-  var steps = [
+  var steps = lang === 'es' ? [
+    ['$ ssh visitante@hector-acosta', ''],
+    ['Estableciendo sesión cifrada .............. ', 'OK'],
+    ['Verificando identidad (MFA) ............... ', 'OK'],
+    ['Cargando perfil: Co-Fundador y CSO, Zagreus AI', ''],
+    ['Cargando resultados: NCL equipo, 25 de 4,779 ', 'TOP 0.5%'],
+    ['Acceso concedido.', '']
+  ] : [
     ['$ ssh visitor@hector-acosta', ''],
     ['Establishing encrypted session ............ ', 'OK'],
     ['Verifying identity (MFA) .................. ', 'OK'],
@@ -593,7 +650,7 @@ footer .wrap { padding-block: 22px; display: flex; justify-content: space-betwee
   ov.className = 'intro';
   ov.setAttribute('role', 'dialog');
   ov.setAttribute('aria-label', 'Welcome');
-  ov.innerHTML = '<div class="term" id="term"></div><button class="skip" type="button">Skip intro</button>';
+  ov.innerHTML = '<div class="term" id="term"></div><button class="skip" type="button">' + (lang === 'es' ? 'Saltar intro' : 'Skip intro') + '</button>';
   document.body.appendChild(ov);
   var term = ov.querySelector('#term');
   var done = false;
@@ -623,7 +680,7 @@ footer .wrap { padding-block: 22px; display: flex; justify-content: space-betwee
   timers.push(setTimeout(function () {
     var h = document.createElement('div');
     h.className = 'hello';
-    h.innerHTML = 'Welcome.<small>You are viewing the portfolio of Hector Acosta.</small>';
+    h.innerHTML = lang === 'es' ? 'Bienvenido.<small>Estás viendo el portafolio de Hector Acosta.</small>' : 'Welcome.<small>You are viewing the portfolio of Hector Acosta.</small>';
     term.appendChild(h);
     requestAnimationFrame(function () { h.classList.add('on'); });
   }, t + 150));
