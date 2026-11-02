@@ -260,6 +260,39 @@ footer .wrap { padding-block: 22px; display: flex; justify-content: space-betwee
 .lang:hover { border-color: var(--signal); color: var(--signal); }
 @media (max-width: 760px) { .top .wrap > .lang { margin-left: auto; } }
 
+
+/* Section navigator */
+section.hero, section.block, section.contact { scroll-margin-top: 64px; }
+.secnav {
+  position: fixed; z-index: 8; right: max(14px, env(safe-area-inset-right, 0px)); top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.secnav button { cursor: pointer; font: inherit; }
+.secnav .arrow {
+  width: 40px; height: 40px; display: grid; place-items: center;
+  background: var(--panel); color: var(--ink); border: 1.5px solid var(--ink);
+  transition: border-color .2s ease, color .2s ease, opacity .2s ease;
+}
+.secnav .arrow:hover { border-color: var(--signal); color: var(--signal); }
+.secnav .arrow[disabled] { opacity: .3; cursor: default; border-color: var(--line); color: var(--muted); }
+.secnav .arrow svg { width: 18px; height: 18px; }
+.secnav .dots { display: flex; flex-direction: column; gap: 2px; padding: 6px 0; }
+.secnav .dot { position: relative; width: 40px; height: 22px; background: none; border: 0; padding: 0; display: grid; place-items: center; }
+.secnav .dot::before { content: ""; width: 8px; height: 8px; border: 1.5px solid var(--muted); background: var(--paper); transition: all .2s ease; }
+.secnav .dot:hover::before { border-color: var(--signal); }
+.secnav .dot.on::before { width: 10px; height: 10px; background: var(--signal); border-color: var(--signal); }
+.secnav .dot span {
+  position: absolute; right: 44px; top: 50%; transform: translateY(-50%); white-space: nowrap;
+  background: var(--ink); color: var(--paper); padding: 4px 8px; font-family: var(--f-mono); font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
+  opacity: 0; pointer-events: none; transition: opacity .15s ease;
+}
+.secnav .dot:hover span, .secnav .dot:focus-visible span { opacity: 1; }
+.secnav .arrow.top-mode { background: var(--signal); border-color: var(--signal); color: #fff; }
+@media (max-width: 1180px) { .secnav .dots { display: none; } .secnav { top: auto; bottom: max(16px, env(safe-area-inset-bottom, 0px)); transform: none; } }
+@media (max-width: 1180px) { .secnav .arrow { width: 44px; height: 44px; box-shadow: 0 2px 10px rgba(0,0,0,.12); } }
+@media (prefers-reduced-motion: reduce) { .secnav .arrow, .secnav .dot::before { transition: none; } }
+@media (max-width: 1180px) { footer .wrap { padding-bottom: 130px; } .contact .wrap { padding-right: max(72px, env(safe-area-inset-right, 0px)); } }
+
 /* Intro sequence */
 .intro {
   position: fixed; inset: 0; z-index: 50; background: var(--term-bg); color: var(--term-fg);
@@ -566,6 +599,12 @@ footer .wrap { padding-block: 22px; display: flex; justify-content: space-betwee
 </section>
 <footer><div class="wrap"><span>© 2026 Hector Acosta</span><span>Cybersecurity · Zagreus AI</span></div></footer>
 
+<nav class="secnav" id="secnav" aria-label="Section navigation">
+  <button class="arrow" id="secUp" type="button" aria-label="Previous section"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M6 15l6-6 6 6"/></svg></button>
+  <div class="dots" id="secDots"></div>
+  <button class="arrow" id="secDown" type="button" aria-label="Next section"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M6 9l6 6 6-6"/></svg></button>
+</nav>
+
 <script>
 (function () {
   var btn = document.getElementById('copy');
@@ -624,6 +663,74 @@ footer .wrap { padding-block: 22px; display: flex; justify-content: space-betwee
       navigator.clipboard.writeText(text).then(function () { out.textContent = T[lang].copied; }, selectIt);
     } catch (e) { selectIt(); }
   });
+
+
+  // Section navigator: up/down by section, dots on wide screens, back to top at the end.
+  var secs = Array.prototype.slice.call(document.querySelectorAll('section.hero, section.block, section.contact'));
+  var dotsBox = document.getElementById('secDots');
+  var upBtn = document.getElementById('secUp');
+  var downBtn = document.getElementById('secDown');
+  var downIcon = downBtn.innerHTML;
+  var topIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square"><path d="M6 11l6-6 6 6M6 19l6-6 6 6"/></svg>';
+  var smooth = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  function secName(s, i) {
+    if (i === 0) return 'Hector Acosta';
+    var h2 = s.querySelector('h2');
+    return h2 ? h2.textContent.trim() : '';
+  }
+  var dots = secs.map(function (s, i) {
+    var d = document.createElement('button');
+    d.className = 'dot';
+    d.type = 'button';
+    d.innerHTML = '<span></span>';
+    d.addEventListener('click', function () { go(i); });
+    dotsBox.appendChild(d);
+    return d;
+  });
+  function current() {
+    var y = window.innerHeight * 0.35, idx = 0;
+    secs.forEach(function (s, i) { if (s.getBoundingClientRect().top <= y) idx = i; });
+    return idx;
+  }
+  function atBottom() { return window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4; }
+  function go(i) {
+    if (i <= 0) { window.scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' }); return; }
+    secs[Math.min(i, secs.length - 1)].scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'start' });
+  }
+  function es() { return document.documentElement.lang === 'es'; }
+  function update() {
+    var c = current(), end = atBottom() || c === secs.length - 1;
+    dots.forEach(function (d, i) {
+      d.classList.toggle('on', i === c);
+      var n = secName(secs[i], i);
+      d.firstChild.textContent = n;
+      d.setAttribute('aria-label', n);
+      if (i === c) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
+    });
+    upBtn.disabled = window.scrollY < 10;
+    upBtn.setAttribute('aria-label', es() ? 'Sección anterior' : 'Previous section');
+    downBtn.classList.toggle('top-mode', end);
+    downBtn.innerHTML = end ? topIcon : downIcon;
+    downBtn.setAttribute('aria-label', end ? (es() ? 'Volver arriba' : 'Back to top') : (es() ? 'Sección siguiente' : 'Next section'));
+    document.getElementById('secnav').setAttribute('aria-label', es() ? 'Navegación por secciones' : 'Section navigation');
+  }
+  upBtn.addEventListener('click', function () {
+    var c = current();
+    var top = secs[c].getBoundingClientRect().top;
+    go(top < -10 ? c : c - 1);
+  });
+  downBtn.addEventListener('click', function () {
+    if (downBtn.classList.contains('top-mode')) { go(0); return; }
+    go(current() + 1);
+  });
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(function () { ticking = false; update(); });
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  document.getElementById('lang').addEventListener('click', function () { setTimeout(update, 0); });
+  update();
 
   // Intro sequence: once per visit, skippable, off for reduced motion.
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
